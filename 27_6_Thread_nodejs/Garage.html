@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head> </head>
+  <body>
+    <div id="display"></div>
+    <script>
+      class MyGarage {
+        static clientIndex = 0;
+        static treatmentIndex = 0;
+        static carIndex = 0;
+        static clients = [];
+        static cars = [];
+        static treatments = [];
+        static addTreatment(carId, date) {
+          this.treatments.push(new Treatment(this.treatmentIndex, carId, date));
+          this.treatmentIndex++;
+        }
+        static addCar(Color, Model, ClientId) {
+          this.cars.push(new Car(Color, Model, ClientId, this.carIndex));
+          this.carIndex++;
+        }
+
+        static addTaxi(Color, Model, ClientId) {
+          this.cars.push(new Taxi(Color, Model, ClientId, this.carIndex));
+          this.carIndex++;
+        }
+
+        static addClient(Name, Tel, Email) {
+          this.clients.push(new Client(this.clientIndex, Name, Tel, Email));
+          this.clientIndex++;
+        }
+
+        static showAllClients() {
+          console.log(this.clients);
+        }
+        static showAllCars() {
+          console.log(this.cars);
+          this.cars.forEach((xCar) => Car.showMeTheCar(xCar));
+        }
+      }
+
+      class Car {
+        id = 0;
+        Color;
+        Model;
+        ClientId;
+
+        static showMeTheCar(xYCar) {
+          console.log(xYCar.constructor.name);
+          xYCar.constructor.name == "Taxi"
+            ? xYCar.beep()
+            : console.log("no beep");
+          display.innerHTML += `<h1>
+            Color: ${xYCar.Color}<br>
+            Model: ${xYCar.Model}<br>
+            ClientId: ${xYCar.ClientId}
+            Type: ${
+              xYCar.constructor.name == "Taxi" ? "Taxi" : "just a regular car"
+            }
+            </h1>`;
+        }
+
+        constructor(_Color, _Model, _ClientId, _carIndex) {
+          this.id = _carIndex;
+          this.Color = _Color;
+          this.Model = _Model;
+          this.ClientId = _ClientId;
+        }
+      }
+      class Taxi extends Car {
+        passengers = 0;
+        constructor(_Color, _Model, _ClientId, _carIndex, pas = 5) {
+          super(_Color, _Model, _ClientId, _carIndex); //call to parent constructor
+          this.passengers = pas;
+        }
+        beep() {
+          console.log("Beep");
+        }
+      }
+
+      class TaxiLimozin extends Taxi {
+        EventType = "";
+        constructor(
+          _Color,
+          _Model,
+          _ClientId,
+          _carIndex,
+          pas = 5,
+          EventType = "none"
+        ) {
+          super(_Color, _Model, _ClientId, _carIndex, pas); //call to parent constructor
+          this.EventType = EventType;
+        }
+        drink() {
+          console.log("Beep");
+        }
+      }
+
+      class Treatment {
+        id;
+        carId;
+        date;
+        constructor(_id, _carId, _date) {
+          this.id = _id;
+          this.carId = _carId;
+          this.date = _date;
+        }
+      }
+      class Client {
+        id;
+        Name;
+        Tel;
+        Email;
+
+        constructor(_id, _Name, _Tel, _Email) {
+          this.id = _id;
+          this.Name = _Name;
+          this.Tel = _Tel;
+          this.Email = _Email;
+        }
+      }
+
+      {
+        //   let app = new MyGarage();
+        //   self test
+        MyGarage.addClient("Yarden", "3456", "beitar@binladen.uk");
+        MyGarage.addClient("Gal", "4556", "isis@terror.com");
+        MyGarage.addClient("Batya", "2222", "franch@terror.com");
+        MyGarage.addCar("red", 1298, 1);
+        MyGarage.addCar("yellow", 2100, 2);
+        MyGarage.addTaxi("black", 2210, 1);
+        MyGarage.showAllClients();
+        MyGarage.showAllCars();
+        //   MyGarage.showAllClients();
+      }
+    </script>
+
+    <!-- <button onclick="MyGarage.addClient('Batya', '2222', 'franch@terror.com')">
+      Add Client
+    </button>
+    <button onclick="MyGarage.addCar('red', 1298, 1)">Add Car</button>
+    <button onclick="MyGarage.showAllClients()">Show Clients</button>
+    <button onclick="MyGarage.showAllCars()">Show Cars</button> -->
+  </body>
+</html>
